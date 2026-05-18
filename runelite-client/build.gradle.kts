@@ -100,6 +100,11 @@ dependencies {
     testImplementation(libs.guice.testlib)
     testImplementation(libs.guice.grapher)
     testImplementation(libs.okhttp.mockserver)
+
+    // PhantomRS built-in engine — JARs built from the PhantomRS Gradle project
+    implementation(fileTree("${rootDir}/../PhantomRS/phantom-engine/build/libs") { include("*.jar") })
+    implementation(fileTree("${rootDir}/../PhantomRS/phantom-api/build/libs") { include("*.jar") })
+    implementation("com.squareup.okhttp3:okhttp:4.12.0")
 }
 
 val shadowJar = tasks.register<Jar>("shadowJar") {

@@ -242,7 +242,10 @@ public class RuneLiteModule extends AbstractModule
 	@Named("runelite.pluginhub.url")
 	HttpUrl providePluginHubBase(@Named("runelite.pluginhub.url") String s)
 	{
-		return HttpUrl.get(System.getProperty("runelite.pluginhub.url", s));
+		// Hardcoded to avoid RuntimeConfig network dependency crashing on non-official launchers
+		String url = System.getProperty("runelite.pluginhub.url", s);
+		if (url == null || url.isEmpty()) url = "https://repo.runelite.net/plugins";
+		return HttpUrl.get(url);
 	}
 
 	@Provides

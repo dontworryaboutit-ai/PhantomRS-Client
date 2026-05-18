@@ -262,9 +262,14 @@ public class PluginManager
 		SplashScreen.stage(.59, null, "Loading plugins");
 		ClassPath classPath = ClassPath.from(getClass().getClassLoader());
 
-		List<Class<?>> plugins = classPath.getTopLevelClassesRecursive(PLUGIN_PACKAGE).stream()
+		List<Class<?>> plugins = new java.util.ArrayList<>();
+		plugins.addAll(classPath.getTopLevelClassesRecursive(PLUGIN_PACKAGE).stream()
 			.map(ClassInfo::load)
-			.collect(Collectors.toList());
+			.collect(Collectors.toList()));
+		// PhantomRS built-in plugins live in com.phantomrs package
+		plugins.addAll(classPath.getTopLevelClassesRecursive("com.phantomrs").stream()
+			.map(ClassInfo::load)
+			.collect(Collectors.toList()));
 
 		loadPlugins(plugins, (loaded, total) ->
 			SplashScreen.stage(.60, .70, null, "Loading plugins", loaded, total, false));

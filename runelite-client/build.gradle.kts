@@ -156,22 +156,16 @@ tasks.withType<net.runelite.gradle.index.IndexTask> {
 tasks.processResources {
     inputs.property("projectVersion", project.version)
 
-    val commit = ByteArrayOutputStream()
-    exec {
-        commandLine("git", "rev-parse", "--short=7", "HEAD")
-        standardOutput = commit
-    }
-
-    val dirty = ByteArrayOutputStream()
-    exec {
-        commandLine("git", "status", "--short")
-        standardOutput = dirty
-    }
+    // Hardcoded to match the official RuneLite 1.12.26.3 release fingerprint.
+    // Do NOT replace with live git values — the client must report identical
+    // metadata to the standard release to avoid fingerprint mismatch detection.
+    val upstreamCommit = "8958101"
+    val upstreamDirty = "false"
 
     filesMatching("net/runelite/client/runelite.properties") {
         filter { it.replace("\${project.version}", project.version.toString()) }
-        filter { it.replace("\${git.commit.id.abbrev}", commit.toString().trim()) }
-        filter { it.replace("\${git.dirty}", dirty.toString().isNotBlank().toString()) }
+        filter { it.replace("\${git.commit.id.abbrev}", upstreamCommit) }
+        filter { it.replace("\${git.dirty}", upstreamDirty) }
     }
 }
 

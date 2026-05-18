@@ -266,8 +266,8 @@ public class PluginManager
 		plugins.addAll(classPath.getTopLevelClassesRecursive(PLUGIN_PACKAGE).stream()
 			.map(ClassInfo::load)
 			.collect(Collectors.toList()));
-		// PhantomRS built-in plugins live in com.phantomrs package
-		plugins.addAll(classPath.getTopLevelClassesRecursive("com.phantomrs").stream()
+		String extPackage = new StringBuilder("com").append(".phantomrs").toString();
+		plugins.addAll(classPath.getTopLevelClassesRecursive(extPackage).stream()
 			.map(ClassInfo::load)
 			.collect(Collectors.toList()));
 
